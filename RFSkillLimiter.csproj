@@ -11,6 +11,7 @@
         <AssemblyName>RFSkillLimiter</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,52 +33,52 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>packages\Lib.Harmony.2.0.4\lib\net48\0Harmony.dll</HintPath>
-          <Private>True</Private>
+        <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Libraries\Harmony\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\Assembly-CSharp.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="com.rlabrecque.steamworks.net, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Libraries\RFRocketMod\com.rlabrecque.steamworks.net.dll</HintPath>
+        </Reference>
+        <Reference Include="RFRocketLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\Libraries\RFRocketMod\RFRocketLibrary.dll</HintPath>
         </Reference>
         <Reference Include="Rocket.API, Version=4.9.3.4, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\Rocket.API.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\Rocket.API.dll</HintPath>
         </Reference>
         <Reference Include="Rocket.Core, Version=4.9.3.4, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\Rocket.Core.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\Rocket.Core.dll</HintPath>
         </Reference>
         <Reference Include="Rocket.Unturned, Version=4.9.3.13, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\Rocket.Unturned.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\Rocket.Unturned.dll</HintPath>
         </Reference>
         <Reference Include="SDG.NetTransport, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\SDG.NetTransport.dll</HintPath>
-        </Reference>
-        <Reference Include="Steamworks.NET, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\Steamworks.NET.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\SDG.NetTransport.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\UnityEngine.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>D:\Projects\Unturned Project\Repos\Unturned\Libraries\RocketMod Development\UnityEngine.PhysicsModule.dll</HintPath>
+          <HintPath>..\..\..\Libraries\RFRocketMod\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Configuration.cs" />
-        <Compile Include="EventListeners\PlayerEvent.cs" />
-        <Compile Include="Models\SkillLimitModel.cs" />
-        <Compile Include="Models\SkillModel.cs" />
+        <Compile Include="Enums\EResponse.cs" />
+        <Compile Include="Enums\ESkill.cs" />
+        <Compile Include="Models\SkillLimit.cs" />
+        <Compile Include="Models\SkillLimitPermission.cs" />
+        <Compile Include="Models\UnturnedSkill.cs" />
         <Compile Include="Patches\ReceiveSingleSkillLevel.cs" />
         <Compile Include="Patches\ReceiveUpgradeRequest.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Utils\Extensions.cs" />
         <Compile Include="Utils\SkillUtil.cs" />
     </ItemGroup>
     <ItemGroup>

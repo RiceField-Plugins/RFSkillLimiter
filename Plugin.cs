@@ -1,8 +1,11 @@
 ﻿using HarmonyLib;
-using RFSkillLimiter.EventListeners;
+using RFSkillLimiter.Enums;
+using RFSkillLimiter.Utils;
 using Rocket.API.Collections;
 using Rocket.Core.Plugins;
+using Rocket.Unturned;
 using Rocket.Unturned.Chat;
+using Rocket.Unturned.Player;
 using SDG.Unturned;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
@@ -11,33 +14,39 @@ namespace RFSkillLimiter
 {
     public class Plugin : RocketPlugin<Configuration>
     {
+        private static int Major = 1;
+        private static int Minor = 0;
+        private static int Patch = 0;
+
         public static Plugin Inst;
         public static Configuration Conf;
         public static Color MsgColor;
-        internal static Harmony Harmony;
+        private Harmony _harmony;
 
         protected override void Load()
         {
             Inst = this;
             Conf = Configuration.Instance;
-            
+
             if (Conf.Enabled)
             {
                 MsgColor = UnturnedChat.GetColorFromName(Conf.MessageColor, Color.green);
 
-                if (Conf.UseHarmonyPatch)
+                _harmony = new Harmony("RFSkillLimiter.Patches");
+                _harmony.PatchAll();
+
+                if (Conf.RevertPlayerSkillProgress)
                 {
-                    Harmony = new Harmony("RFSkillLimiter.Patches");
-                    Harmony.PatchAll();
+                    SkillUtil.RevertPlayersSkill();
+                    
+                    U.Events.OnPlayerConnected += OnPlayerJoined;
                 }
-                else
-                    PlayerSkills.OnSkillUpgraded_Global += PlayerEvent.OnSkillUpgraded;
             }
             else
                 Logger.LogError($"[{Name}] Plugin: DISABLED");
 
             Logger.LogWarning($"[{Name}] Plugin loaded successfully!");
-            Logger.LogWarning($"[{Name}] RFSkillLimiter v1.0.0");
+            Logger.LogWarning($"[{Name}] {Name} v{Major}.{Minor}.{Patch}");
             Logger.LogWarning($"[{Name}] Made with 'rice' by RiceField Plugins!");
         }
 
@@ -45,22 +54,28 @@ namespace RFSkillLimiter
         {
             if (Conf.Enabled)
             {
-                if (Conf.UseHarmonyPatch)
+                if (Conf.RevertPlayerSkillProgress)
                 {
-                    Harmony.UnpatchAll("RFSkillLimiter.Patches");
+                    U.Events.OnPlayerConnected -= OnPlayerJoined;
                 }
-                else
-                    PlayerSkills.OnSkillUpgraded_Global -= PlayerEvent.OnSkillUpgraded;
+                
+                _harmony.UnpatchAll(_harmony.Id);
             }
-            
+
             Inst = null;
             Conf = null;
 
             Logger.LogWarning($"[{Name}] Plugin unloaded successfully!");
         }
-        public override TranslationList DefaultTranslations => new TranslationList
+
+        public override TranslationList DefaultTranslations => new()
         {
-            {"rfskilllimiter_limit_reach", "[RFSkillLimiter] Skill has reached max level! [Skill] {0} [Max] {1}"},
+            {$"{EResponse.MAX_SKILL_REACH}", "Your {0} skill has reached max level allowed!"},
         };
+
+        private static void OnPlayerJoined(UnturnedPlayer player)
+        {
+            SkillUtil.RevertPlayerSkill(player);
+        }
     }
 }
